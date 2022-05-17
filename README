@@ -1,0 +1,265 @@
+/**********************************************************
+* PROJ1: CalcYouLater
+* CS15
+* README
+* by Sean Liu, October 2021
+*
+*********************************************************/
+             
+                               Program Purpose:
+
+This homework assignment teaches us how to implement the stack abstract data
+type, and also how to use Reverse Polish Notation.
+
+                              Acknowledgements:
+
+Thanks to Zack Rummler for looking over my stringstream usage. Thanks to 
+Professor Kazerounian for replying to my Piazza questions promptly. Thanks to
+Jason Wu and Blake Watabe for working with me through the late night. Huge
+thanks to the TAs who helped me in office hours!
+
+                                    Files:
+
+main.cpp: Driver file for CalcYouLater. It calls the RPNCalc's driver 
+          function and receives input. Exits the program appropriately 
+          through the destructor, which prevents memory issues.
+
+test1.cylc \ 
+test2.cylc \ 
+test3.cylc: Test files with an assortment of commands to test the 
+            functionality of my program and help match my output to the spec.
+
+testOutput1.txt \
+testOutput2.txt \
+testOutput3.txt \
+myOutput1.txt \
+myOutput2.txt \
+myOutput3.txt: Output files from passing the test files into my implementation
+               and the reference implementation, which I used for diff 
+               testing.
+
+RPNCalc.cpp: The implementation of the RPNCalc class. Defines all the 
+             functions that modify the RPNCalc. Its definitions are used in
+             main.cpp when it calls RPNCalc.h's public function run, and the 
+             user can call all of the private functions.
+
+RPNCalc.h: The interface of the RPNCalc class. Declares all of the
+           functions that modify the RPNCalc. Linked to main.cpp, which
+           allows for the driver to run the driver function.
+
+unit_tests.h: Tester file for the DatumStack class.
+
+DatumStack.cpp: The implementation of the DatumStack class. Defines all the
+                functions that modify the DatumStack. These definitions 
+                support the RPNCalc functions, and throw the errors those
+                functions might face.
+
+DatumStack.h: The interface of the DatumStack class. Declares all of the
+              functions that modify the DatumStack. Aids the construction
+              of the RPNCalc class, and is linked in RPNCalc.h.
+
+parsertest.cpp: Tester file for the parseRString function from phase 1.
+
+parser.cpp: The implementation of the parseRString function. This definition
+            enables rstrings to be processed in the RPNCalc functions.
+
+parser.h: The interface and declaration of the parseRString function, which
+          is linked to RPNCalc.h.
+
+Makefile: This file contains all the compilation and linking commands that
+          allows my program to be run and tested seamlessly. Without this 
+          file I would need to compile each interface and implementation file
+          individually. Instead, I can run "unit_test" and everything will 
+          be compiled and linked together. This improves efficiency. 
+          Especially because the command will only compile files that have 
+          been newly modified, instead of compiling everything redundantly.
+
+README: This file. It provides insights to what this assignment is, who
+        helped me with it, and how I tested my final product.
+
+                        How to compile and run my program: 
+
+Enter "make" into your console, and the Makefile will do its magic. It will
+create an executable called CalcYouLater. Run it and you're in!
+
+                                Data Structures:
+
+The data structure we used this project was a stack. Stacks are great
+because they offers lots of abstraction, as demonstrated by the ratio of 
+public functions to private functions in my RPNCalc.h file. They are a last 
+in, first out (LIFO) data structure. This means that elements are only added 
+and removed at the top of the stack. 
+
+This system is fitting for a calculator. Think of the iPhone calculator, you 
+type numbers in, press the desired operator, then the result updates on the 
+screen. Pressing clear once removes the most recent result, and pressing it 
+twice completely clears the progress made. This is almost exactly how
+RPNCalc works. 
+
+If we used a list, array, or other data structure, storing inputs in a
+calculator can get very overwhelming. It would be extremely easy to lose the
+position of data. Operations would be inefficient, because the calculator
+would need to somehow traverse its data to gather the desired integers to 
+perform the operations. After the operations, pointers or indexes would need
+to be updated. Clearly, there are lots of moving parts in a calculator, but
+stacks keeps them tightly organized and keeps things efficient.
+
+Other real world examples of stacks are a deck of cards and a pile of plates.
+Alternatively, a stack of cards and a stack of plates. We easily check the
+top individuals, and remove them first. To clear the stack, you continually
+remove the top until there are none left. To add to the stack, you just place
+an individual on top. Plates are an excellent example, removing and/or 
+checking a plate from the middle of a stack makes no sense.
+
+Although the simplicity of stacks benefit us here, it is quite limiting.
+For example, searching for a member of a stack would probably involve creating
+another stack to keep track of the removed members. The is in stark contrast
+to the binary search trees we just learned about, which are extremely 
+efficient and organized. For simple tasks stacks can be great, but they 
+lack versatility.
+
+Since I used vectors to implement queues in the last homework, the algorithms
+I used in this project were not new to me. However, I really enjoyed the
+abstraction that the stack offered. Having a strong foundation in phase one 
+made implementing the actual calculator quite straightforward. However, I did
+learn the downfalls of using the exit and break functions to quit programs 
+this week. Although it was tough to find out how to implement the quit 
+function without using those functions, I learned about flags. Using booleans 
+is not new to me, yet making it a private variable for all of RPNCalc was not 
+a solution that I would have quickly sought. Thanks to Ellis, I learned how
+processor chips use flags to perform or cease their operations!
+ 
+                                    Testing:
+
+I was confident that my DatumStack operations would work, because I used a
+vector to implement the DatumStack. However, just to be safe, I made the file
+unit_tests.h For the constructors, I called them in their own 
+functions. There were no errors with those. For the isEmpty and size functions
+I created an empty DatumStack, called the functions, then printed the values 
+of each return. For a fresh DatumStack, it is expected that size is 0 and 
+isEmpty is 1, which my test returned. For the push and clear functions, I 
+created an empty DatumStack, called the functions, then printed size after. 
+The size matched the number of pushes I had, and updated to 0 after I called 
+clear, so I knew these functions worked properly. For the top and pop 
+functions, I created an empty DatumStack, pushed various types of Datum onto 
+it, then called top, pop, and top again. I added print statements of the Datum
+to cerr, so I could see if the correct elements were in the correct spot. Top
+was initially the last element I pushed, and became the element before that 
+after I called pop, telling me all is good!
+
+To test parseRstring, I called the function with the parameter cin as the 
+input stream in main.cpp. However, right off the bat it wouldn't
+work. After looking at other homework assignments, I realized I forgot to 
+create a header file for parser.cpp and I was trying to include an 
+implementation file in main.cpp. After fixing that, I could tackle the 
+problems in the function itself. I added cerr statements which told me: when 
+I entered the loop, what the current input character was, what the rstring 
+updated to in the loop, when a bracket was added and how many open and closed
+brackets there were, and the final rstring outside of the loop. My first 
+implementation was supposed to be the following: rstring = string() + 
+processedInput. However, my cerr statement in the loop showed that the rstring
+was not being concatenated, but simply reassigned in each iteration. Then I 
+decided to include the string library and use the push_back function to 
+concatenate rstring. Once I fixed that, I turned my sight to another problem.
+My function ran indefinitely. It only stopped when I cancelled the operation 
+in terminal. Then I realized I was testing it wrong. I didn't need to include
+the first open bracket, since the function would be called after that. While 
+that fixed the looping issue, I had to update my rstring initialization to 
+have an open bracket so that it would still return a full expression. Lastly,
+after all of this, I simply had to push a space to rstring before each 
+character was added, so that my rstring matches the spec's formatting. Then I
+deleted all the testing print statements for submission.
+
+After writing my Makefile and trying to compile and run my CalcYouLater, the 
+program would not do anything instead of waiting for input. Then I put a cerr
+statement in main, which wouldn't print. After tweaking the order of my 
+rules and ensuring I was not including any extraneous files in the 
+dependencies, I got to a new error that told me I had multiple definitions of
+main from main.cpp and got_int.cpp. After looking on Piazza and from my
+experience in phase 1, I realized that I shouldn't be including a .cpp file.
+Getting rid of this include prevented the provided got_int function from 
+working, so I just copied its implementation from got_int.cpp into my 
+RPNCalc.cpp and defined it in RPNCalc.h. This fixed everything!
+
+My exec function would work, but when I went to print the result it would
+print "Error: empty_stack". I put a lot of cerr statements in the exec
+function to see where the function would bug out, but the function printed all
+statements successfully. This led me to conclude that the issue is in my 
+commandLoop function. To ensure the stringstream was being used correctly,
+I put a cerr statement at the beginning of commandLoop and in the while
+loop. The commandLoop function was being called fine, but the while loop was 
+not being hit. I printed the stringstream's input before the loop and it was 
+blank, just giving me a new line in terminal. After moving around where the 
+command string took in the input stream, I managed to hit the loop. However, 
+it was taking the whole rstring as a command instead of each character. 
+Then I remembered there was a comment about my parser in phase 1. Those 
+comments said I was adding spaces in the wrong places. As a result, I deleted
+the part where I added spaces. However, I just needed to modify it instead of
+deleting. After reviewing my parser and comparing designs with Zack, as 
+mentioned in the acknowledgements, I realized my parser implementation was 
+adding spaces in between every character, instead of strictly between the 
+string and the brackets. Fixing this enabled the rstring to be passed through
+stringstream, and into the commandLoop function's while loop smoothly.
+
+When I tried to run my file function, it immediately printed 
+"Unable to open {". This tells me that my calling of parseRString could be the
+issue. I used a relatively thorough test case from the spec, as seen in 
+test1.cylc. It wasn't giving me the desired output. When I put cerr statements
+to show me what commands the commandLoop function was receiving, and what 
+those command results were, it was processing the file all wrong. Instead of 
+adding the rstrings to the stack, it was trying to exec them. So I went back
+to parsertest.cpp again. Specifically this line was giving me trouble:
+"{ 6 + dup 10 < { 10 > } { 10 == } if }". I found that I was accidentally
+taking in another command from stringstream in my conditional for processing
+rstrings. Once I deleted this it was working, but it kept giving me 
+"Error: empty_stack" after "+". At this time I had not implemented my errors
+using try catch statements. I was just using cerr and returns. After deleting
+them to simply rely on commandLoop catching the errors from the DatumStack, 
+all worked well. Lastly, the quit call in the file wasn't working. Using a
+cerr statement in the command loop, I figured out it was being received but 
+not hitting the conditional that called quit. I fixed this by moving the 
+reception of the command from stringstream from the bottom of the command 
+loop to the top. Turns out this broke things. then I just moved the 
+conditional of quit to the bottom of the command loop. Doing this prevented 
+quit in an rstring from a file to work, but worked in a rstring. After going
+to office hours, I changed the way the commandLoop while loop operated, to 
+take commands in in the condition, as opposed to input.eof(). This fixed it.
+
+I tested my program with fib.cylc and fact.cylc and compared the outputs to
+the reference implementation and found that while it works with a non-empty
+stack, the errors printed when the stack is empty are not the same. The
+reference printed "Error: empty stack" three times and stopped. Mine printed 
+two "Error: empty stack" and one "Error: expected rstring in if branch". At 
+first I thought this might be an issue with my if function, but me and a TA 
+in office hours realized that it was an issue with the "<". Despite printing
+the correct error, it was not popping the number it was trying to operate on.
+This is why I was getting the rstring error, because the if function was
+trying to use the integer 2 as a test condition. The reference implementation
+didn't have a test condition, in other words, so it didn't have sufficient 
+Datum to fully execute the if function. That's why it was printing the empty
+stack error. I fixed the order of my cerr statements and pops in the 
+comparison operator function, and all was fixed! This was updated again when
+I deleted all of my cerr statements and let the commandLoop catch errors from
+DatumStack, which made everything work a lot smoother.
+
+When diff testing my test file, I found out that my arithmeticOperator 
+function wasn't working right. In the end of my test file I call exec on the
+rstring { 10 / 0 }, which is on top of { 10 mod 3 } in the stack. Both the
+calculators printed the same error message, but when print was called after
+exec mine was printing the rstring while the reference had an empty stack
+error. After putting cerr statements in my arithmeticOperator function,
+I realized that drop wasn't being called the second time around. This is
+because I was taking in the numbers directly into integers using getInt, but
+this wouldn't work because the commands were not all integers. So I adjusted
+my implementation to store the info as Datum elements, and then use getInt
+during the actual calculations. This worked better, as it was properly 
+popping while still printing the correct error message. I applied this to my 
+comparison operators too.
+
+I also tested my implementation with fib.cylc and fact.cylc, but I didn't
+include it in provide because it was given to us. I figure that will be a
+test case for grading anyways.
+
+                                  Time Spent:
+
+40 hours
