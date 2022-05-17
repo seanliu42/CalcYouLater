@@ -24,20 +24,6 @@ main.cpp: Driver file for CalcYouLater. It calls the RPNCalc's driver
           function and receives input. Exits the program appropriately 
           through the destructor, which prevents memory issues.
 
-test1.cylc \ 
-test2.cylc \ 
-test3.cylc: Test files with an assortment of commands to test the 
-            functionality of my program and help match my output to the spec.
-
-testOutput1.txt \
-testOutput2.txt \
-testOutput3.txt \
-myOutput1.txt \
-myOutput2.txt \
-myOutput3.txt: Output files from passing the test files into my implementation
-               and the reference implementation, which I used for diff 
-               testing.
-
 RPNCalc.cpp: The implementation of the RPNCalc class. Defines all the 
              functions that modify the RPNCalc. Its definitions are used in
              main.cpp when it calls RPNCalc.h's public function run, and the 
@@ -47,8 +33,6 @@ RPNCalc.h: The interface of the RPNCalc class. Declares all of the
            functions that modify the RPNCalc. Linked to main.cpp, which
            allows for the driver to run the driver function.
 
-unit_tests.h: Tester file for the DatumStack class.
-
 DatumStack.cpp: The implementation of the DatumStack class. Defines all the
                 functions that modify the DatumStack. These definitions 
                 support the RPNCalc functions, and throw the errors those
@@ -57,8 +41,6 @@ DatumStack.cpp: The implementation of the DatumStack class. Defines all the
 DatumStack.h: The interface of the DatumStack class. Declares all of the
               functions that modify the DatumStack. Aids the construction
               of the RPNCalc class, and is linked in RPNCalc.h.
-
-parsertest.cpp: Tester file for the parseRString function from phase 1.
 
 parser.cpp: The implementation of the parseRString function. This definition
             enables rstrings to be processed in the RPNCalc functions.
@@ -85,10 +67,10 @@ create an executable called CalcYouLater. Run it and you're in!
                                 Data Structures:
 
 The data structure we used this project was a stack. Stacks are great
-because they offers lots of abstraction, as demonstrated by the ratio of 
+because they offer lots of abstraction, as demonstrated by the ratio of 
 public functions to private functions in my RPNCalc.h file. They are a last 
 in, first out (LIFO) data structure. This means that elements are only added 
-and removed at the top of the stack. 
+and removed at the top of the stack.
 
 This system is fitting for a calculator. Think of the iPhone calculator, you 
 type numbers in, press the desired operator, then the result updates on the 
@@ -116,14 +98,16 @@ For example, searching for a member of a stack would probably involve creating
 another stack to keep track of the removed members. The is in stark contrast
 to the binary search trees we just learned about, which are extremely 
 efficient and organized. For simple tasks stacks can be great, but they 
-lack versatility.
+lack versatility. 
 
-Since I used vectors to implement queues in the last homework, the algorithms
-I used in this project were not new to me. However, I really enjoyed the
-abstraction that the stack offered. Having a strong foundation in phase one 
-made implementing the actual calculator quite straightforward. However, I did
-learn the downfalls of using the exit and break functions to quit programs 
-this week. Although it was tough to find out how to implement the quit 
+We also used vectors because they are dynamically sized, so we wouldn't have 
+to worry too much about updating size and/or capacity when extracting and 
+processing values and operations from the stack.
+
+I really enjoyed the abstraction that stacks offered. Having a strong foundation 
+in phase one made implementing the actual calculator quite straightforward. 
+However, I did learn the downfalls of using the exit and break functions to quit 
+programs this week. Although it was tough to find out how to implement the quit 
 function without using those functions, I learned about flags. Using booleans 
 is not new to me, yet making it a private variable for all of RPNCalc was not 
 a solution that I would have quickly sought. Thanks to Ellis, I learned how
